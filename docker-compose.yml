@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3"
 
 services:
   nginx:
@@ -13,25 +13,23 @@ services:
       - ./:/var/www/laravel
       - ./docker/nginx/error_log:/var/log/nginx
   php-fpm:
-    container_name: php
+    container_name: php-fpm
     build:
       context: ./docker/php
     volumes:
       - ./:/var/www/laravel
     links:
       - mysql
-  mysql:
+  db:
+    container_name: db
     build:
       context: ./docker/mysql
     restart: unless-stopped
-    container_name: mysql
     ports:
       - 3306:3306
-    #environment:
-        #MYSQL_DATABASE: ${DB_DATABASE}
-        #MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-        #MYSQL_PASSWORD: ${DB_PASSWORD}
-        #MYSQL_USER: ${DB_USERNAME}
+    environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
         - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
         - ./docker/mysql/data:/var/lib/mysql
