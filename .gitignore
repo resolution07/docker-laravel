@@ -1,0 +1,7 @@
+app/*
+!app/composer.json
+docker/mysql/data
+
+.idea
+.env
+*.log
